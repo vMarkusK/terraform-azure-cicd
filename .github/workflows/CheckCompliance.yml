@@ -3,7 +3,7 @@ name: "Check Compliance"
 # Only trigger, when the build workflow succeeded
 on:
   workflow_run:
-    workflows: ["erraform Deploy"]
+    workflows: ["Terraform Deploy"]
     types:
       - completed
 
@@ -16,6 +16,13 @@ jobs:
     name: "Check Compliance Dev"  
     runs-on: ubuntu-latest
     environment: dev
+    concurrency:
+      group: dev_environment
+      cancel-in-progress: false
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
