@@ -9,6 +9,6 @@ resource "azurerm_subnet" "first" {
   name                            = "snet-first"
   resource_group_name             = azurerm_resource_group.this.name
   virtual_network_name            = azurerm_virtual_network.this.name
-  address_prefixes                = [cidrsubnet(azurerm_virtual_network.this.address_space[0], 4, 1)]
+  address_prefixes                = [cidrsubnet(azurerm_virtual_network.this.address_space, 4, 1)]
   default_outbound_access_enabled = false
 }
