@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     concurrency:
-      group: dev_environment
+      group: dev_compliance
       cancel-in-progress: false
     permissions:
       id-token: write
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     concurrency:
-      group: prod_environment
+      group: prod_compliance
       cancel-in-progress: false
     permissions:
       id-token: write
