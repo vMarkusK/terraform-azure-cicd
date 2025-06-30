@@ -17,7 +17,36 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     concurrency:
-      group: dev_environment
+      group: dev_compliance
+      cancel-in-progress: false
+    permissions:
+      id-token: write
+      contents: read
+      actions: read
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_USE_OIDC: true
+    steps:     
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    
+    - name: Check for resource compliance
+      uses: azure/policy-compliance-scan@v0
+      with:
+        scopes: |
+          /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  compliance_prod:
+    name: "Check Compliance Prod"  
+    runs-on: ubuntu-latest
+    environment: prod
+    concurrency:
+      group: prod_compliance
       cancel-in-progress: false
     permissions:
       id-token: write
